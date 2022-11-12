@@ -40,6 +40,6 @@ jobs:
       run: docker logs "${{ job.services.ckan.id }}"
     - name: Check if CKAN is up
       run: |
-        curl --retry 5 --retry-delay 1  http://ckan:5000/api/3/action/status_show
+        curl --retry 5 --retry-delay 1  http://localhost:5000/api/3/action/status_show
     - name: LOG AFTER CKAN CHECK...
       run: docker logs "${{ job.services.ckan.id }}"
