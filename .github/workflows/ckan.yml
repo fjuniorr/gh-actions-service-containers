@@ -21,6 +21,8 @@ jobs:
           CKAN_DATAPUSHER_URL: http://datapusher:8800
           CKAN__DATAPUSHER__CALLBACK_URL_BASE: http://ckan:5000
           TZ: UTC
+        ports:
+          - "5000:5000"
       solr:
         image: ckan/ckan-solr:${{ matrix.ckan-version }}
       postgres:
