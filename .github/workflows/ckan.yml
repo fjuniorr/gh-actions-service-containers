@@ -43,5 +43,15 @@ jobs:
     - name: Check if CKAN is up
       run: |
         curl --retry 5 --retry-delay 1  http://localhost:5000/api/3/action/status_show
+    - name: Generate CKAN API token
+      run: |
+        echo "TEST_API_KEY=$(docker exec "${{ job.services.ckan.id }}" ckan user token add ckan_admin dev_token | sed 's/API Token created://' | tr -d '\n\t')" >> $GITHUB_ENV
+      if: matrix.ckan-version == '2.9'
+    - name: Generate CKAN API key
+      run: |
+        echo "TEST_API_KEY"=$(docker exec "${{ job.services.ckan.id }}" paster --plugin=ckan user ckan_admin | ggrep -o -P '(?<=apikey=).*(?= created)') >> $GITHUB_ENV
+      if: matrix.ckan-version != '2.9'
+    - name: Get value of TEST_API_KEY
+    run: echo "${{ env.TEST_API_KEY }}"
     - name: LOG AFTER CKAN CHECK...
       run: docker logs "${{ job.services.ckan.id }}"
