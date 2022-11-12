@@ -21,6 +21,9 @@ jobs:
           CKAN_DATAPUSHER_URL: http://datapusher:8800
           CKAN__DATAPUSHER__CALLBACK_URL_BASE: http://ckan:5000
           TZ: UTC
+          CKAN_SYSADMIN_NAME: ckan_admin
+          CKAN_SYSADMIN_PASSWORD: test1234
+          CKAN_SYSADMIN_EMAIL: mail@example.com
         ports:
           - "5000:5000"
       solr:
@@ -49,7 +52,7 @@ jobs:
       if: matrix.ckan-version == '2.9'
     - name: Generate CKAN API key
       run: |
-        echo "TEST_API_KEY"=$(docker exec "${{ job.services.ckan.id }}" paster --plugin=ckan user ckan_admin | ggrep -o -P '(?<=apikey=).*(?= created)') >> $GITHUB_ENV
+        echo "TEST_API_KEY"=$(docker exec "${{ job.services.ckan.id }}" paster --plugin=ckan user ckan_admin | grep -o -P '(?<=apikey=).*(?= created)') >> $GITHUB_ENV
       if: matrix.ckan-version != '2.9'
     - name: Get value of TEST_API_KEY
       run: echo "${{ env.TEST_API_KEY }}"
