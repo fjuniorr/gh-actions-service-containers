@@ -55,6 +55,8 @@ jobs:
         echo "TEST_API_KEY"=$(docker exec "${{ job.services.ckan.id }}" paster --plugin=ckan user ckan_admin | grep -o -P '(?<=apikey=).*(?= created)') >> $GITHUB_ENV
       if: matrix.ckan-version != '2.9'
     - name: Get value of TEST_API_KEY
-      run: echo "${{ env.TEST_API_KEY }}"
+      run: |
+        curl -H "Authorization: ${{ env.TEST_API_KEY }}" http://localhost:5000/api/3/action/user_show?id=ckan_admin
+      echo 
     - name: LOG AFTER CKAN CHECK...
       run: docker logs "${{ job.services.ckan.id }}"
