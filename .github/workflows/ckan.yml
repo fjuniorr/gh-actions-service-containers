@@ -37,7 +37,7 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
       datapusher:
         image: ghcr.io/keitaroinc/datapusher:0.0.17
-        environment:
+        env:
           - DATAPUSHER_MAX_CONTENT_LENGTH=10485760
           - DATAPUSHER_CHUNK_SIZE=16384
           - DATAPUSHER_CHUNK_INSERT_ROWS=250
